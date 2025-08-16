@@ -69,12 +69,12 @@ fun PerformanceDetailScreen(navController: NavController, performanceId: String)
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         Button(
-                            onClick = { navController.navigate("seat-selection/${performance.id}") },
+                            onClick = { navController.navigate("schedule-selection/${performance.id}") },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text("选择座位")
+                            Text("立即购票")
                             Spacer(modifier = Modifier.width(4.dp))
-                            Icon(Icons.Default.List, contentDescription = null)
+                            Icon(Icons.Default.ShoppingCart, contentDescription = null)
                         }
                     }
                 }

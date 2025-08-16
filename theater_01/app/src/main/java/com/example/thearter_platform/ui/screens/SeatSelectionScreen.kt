@@ -17,16 +17,23 @@ import androidx.compose.foundation.clickable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SeatSelectionScreen(navController: NavController, performanceId: String) {
-    println("DEBUG: 进入选座页面，performanceId=$performanceId")
-    
-    var selectedSeats by remember { mutableStateOf(mutableSetOf<String>()) }
+fun SeatSelectionScreen(navController: NavController, performanceId: String, scheduleId: String) {
+    println("DEBUG: 进入选座页面，performanceId=$performanceId, scheduleId=$scheduleId")
     
     val performance = when (performanceId) {
         "1" -> "《哈姆雷特》"
         "2" -> "《天鹅湖》"
         "3" -> "《茶花女》"
         else -> "未知演出"
+    }
+    
+    val schedule = when (scheduleId) {
+        "1" -> Schedule("1", "2024-01-15 19:30", "歌剧厅", "¥180-1280", "156")
+        "2" -> Schedule("2", "2024-01-16 19:30", "歌剧厅", "¥180-1280", "89")
+        "3" -> Schedule("3", "2024-01-17 19:30", "歌剧厅", "¥180-1280", "234")
+        "4" -> Schedule("4", "2024-01-18 14:30", "歌剧厅", "¥180-1280", "67")
+        "5" -> Schedule("5", "2024-01-19 19:30", "歌剧厅", "¥180-1280", "123")
+        else -> Schedule("1", "2024-01-15 19:30", "歌剧厅", "¥180-1280", "156")
     }
     
     val seatTypes = listOf(
@@ -41,18 +48,6 @@ fun SeatSelectionScreen(navController: NavController, performanceId: String) {
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "返回")
-                    }
-                },
-                actions = {
-                    TextButton(
-                        onClick = { 
-                            if (selectedSeats.isNotEmpty()) {
-                                navController.navigate("payment/${performanceId}/${selectedSeats.joinToString(",")}")
-                            }
-                        },
-                        enabled = selectedSeats.isNotEmpty()
-                    ) {
-                        Text("确认", fontWeight = FontWeight.Bold)
                     }
                 }
             )
@@ -84,7 +79,7 @@ fun SeatSelectionScreen(navController: NavController, performanceId: String) {
                     Spacer(modifier = Modifier.height(8.dp))
                     
                     Text(
-                        text = "2024-01-15 19:30",
+                        text = schedule.dateTime,
                         fontSize = 14.sp,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
@@ -92,7 +87,7 @@ fun SeatSelectionScreen(navController: NavController, performanceId: String) {
                     Spacer(modifier = Modifier.height(8.dp))
                     
                     Text(
-                        text = "国家大剧院",
+                        text = "国家大剧院 ${schedule.hall}",
                         fontSize = 14.sp,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
@@ -115,7 +110,7 @@ fun SeatSelectionScreen(navController: NavController, performanceId: String) {
                     .fillMaxWidth()
                     .clickable { 
                         println("DEBUG: 点击2D选座")
-                        navController.navigate("2d-seating/$performanceId")
+                        navController.navigate("2d-seating/$performanceId/$scheduleId")
                     },
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
@@ -168,7 +163,7 @@ fun SeatSelectionScreen(navController: NavController, performanceId: String) {
                     .fillMaxWidth()
                     .clickable { 
                         println("DEBUG: 点击3D选座")
-                        navController.navigate("3d-seating/$performanceId")
+                        navController.navigate("3d-seating/$performanceId/$scheduleId")
                     },
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {

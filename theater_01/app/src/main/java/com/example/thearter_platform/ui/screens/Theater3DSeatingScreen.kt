@@ -24,11 +24,27 @@ import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Theater3DSeatingScreen(navController: NavController, theaterId: String) {
+fun Theater3DSeatingScreen(navController: NavController, performanceId: String, scheduleId: String) {
     var selectedView by remember { mutableStateOf("3D") }
     var selectedSection by remember { mutableStateOf("A区") }
     var selectedSeats by remember { mutableStateOf(setOf<String>()) }
     var zoomLevel by remember { mutableStateOf(1.0f) }
+    
+    val performance = when (performanceId) {
+        "1" -> "《哈姆雷特》"
+        "2" -> "《天鹅湖》"
+        "3" -> "《茶花女》"
+        else -> "未知演出"
+    }
+    
+    val schedule = when (scheduleId) {
+        "1" -> Schedule("1", "2024-01-15 19:30", "歌剧厅", "¥180-1280", "156")
+        "2" -> Schedule("2", "2024-01-16 19:30", "歌剧厅", "¥180-1280", "89")
+        "3" -> Schedule("3", "2024-01-17 19:30", "歌剧厅", "¥180-1280", "234")
+        "4" -> Schedule("4", "2024-01-18 14:30", "歌剧厅", "¥180-1280", "67")
+        "5" -> Schedule("5", "2024-01-19 19:30", "歌剧厅", "¥180-1280", "123")
+        else -> Schedule("1", "2024-01-15 19:30", "歌剧厅", "¥180-1280", "156")
+    }
     
     Column(
         modifier = Modifier.fillMaxSize()
@@ -46,7 +62,7 @@ fun Theater3DSeatingScreen(navController: NavController, theaterId: String) {
             }
             
             Text(
-                text = "剧场${theaterId} - 3D座位",
+                text = "3D选座 - ${performance}",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -112,7 +128,7 @@ fun Theater3DSeatingScreen(navController: NavController, theaterId: String) {
         ) {
             when (selectedView) {
                 "3D" -> Theater3DView(
-                    theaterId = theaterId,
+                    theaterId = performanceId,
                     selectedSection = selectedSection,
                     selectedSeats = selectedSeats,
                     onSeatClick = { seatId ->
@@ -125,7 +141,7 @@ fun Theater3DSeatingScreen(navController: NavController, theaterId: String) {
                     zoomLevel = zoomLevel
                 )
                 "2D" -> Theater2DView(
-                    theaterId = theaterId,
+                    theaterId = performanceId,
                     selectedSection = selectedSection,
                     selectedSeats = selectedSeats,
                     onSeatClick = { seatId ->
@@ -137,7 +153,7 @@ fun Theater3DSeatingScreen(navController: NavController, theaterId: String) {
                     }
                 )
                 "俯视" -> TheaterTopView(
-                    theaterId = theaterId,
+                    theaterId = performanceId,
                     selectedSection = selectedSection,
                     selectedSeats = selectedSeats,
                     onSeatClick = { seatId ->
@@ -155,8 +171,15 @@ fun Theater3DSeatingScreen(navController: NavController, theaterId: String) {
         BottomInfoBar(
             selectedSeats = selectedSeats,
             onConfirm = {
-                // 确认选座
-                navController.navigate("seat-confirmation/${theaterId}?seats=${selectedSeats.joinToString(",")}")
+                // 直接导航到支付页面
+                if (selectedSeats.isNotEmpty()) {
+                    val seatsParam = selectedSeats.joinToString(",")
+                    // 先保存座位信息到SavedStateHandle
+                    navController.currentBackStackEntry?.savedStateHandle?.set("selectedSeats", seatsParam)
+                    val route = "payment/$performanceId/$scheduleId/placeholder"
+                    println("DEBUG: 3D选座导航到支付页面: $route")
+                    navController.navigate(route)
+                }
             }
         )
     }

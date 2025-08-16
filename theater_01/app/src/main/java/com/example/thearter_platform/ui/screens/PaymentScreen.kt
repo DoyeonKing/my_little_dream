@@ -17,10 +17,13 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PaymentScreen(navController: NavController, performanceId: String, selectedSeats: String) {
+fun PaymentScreen(navController: NavController, performanceId: String, scheduleId: String, selectedSeats: String) {
     var selectedPaymentMethod by remember { mutableStateOf("wechat") }
     var isProcessing by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
+    
+    // 从SavedStateHandle获取座位信息
+    val actualSelectedSeats = navController.currentBackStackEntry?.savedStateHandle?.get<String>("selectedSeats") ?: selectedSeats
     
     val performance = when (performanceId) {
         "1" -> "《哈姆雷特》"
@@ -29,7 +32,16 @@ fun PaymentScreen(navController: NavController, performanceId: String, selectedS
         else -> "未知演出"
     }
     
-    val seats = selectedSeats.split(",").filter { it.isNotEmpty() }
+    val schedule = when (scheduleId) {
+        "1" -> Schedule("1", "2024-01-15 19:30", "歌剧厅", "¥180-1280", "156")
+        "2" -> Schedule("2", "2024-01-16 19:30", "歌剧厅", "¥180-1280", "89")
+        "3" -> Schedule("3", "2024-01-17 19:30", "歌剧厅", "¥180-1280", "234")
+        "4" -> Schedule("4", "2024-01-18 14:30", "歌剧厅", "¥180-1280", "67")
+        "5" -> Schedule("5", "2024-01-19 19:30", "歌剧厅", "¥180-1280", "123")
+        else -> Schedule("1", "2024-01-15 19:30", "歌剧厅", "¥180-1280", "156")
+    }
+    
+    val seats = actualSelectedSeats.split(",").filter { it.isNotEmpty() }
     val totalPrice = seats.size * 200
     
     val paymentMethods = listOf(
@@ -63,7 +75,7 @@ fun PaymentScreen(navController: NavController, performanceId: String, selectedS
                                 coroutineScope.launch {
                                     kotlinx.coroutines.delay(2000) // 模拟支付延迟
                                     isProcessing = false
-                                    navController.navigate("purchase-confirmation/${performanceId}/${selectedSeats}") {
+                                    navController.navigate("purchase-confirmation/${performanceId}/${scheduleId}/${selectedSeats}") {
                                         popUpTo("home") { inclusive = true }
                                     }
                                 }
@@ -114,7 +126,7 @@ fun PaymentScreen(navController: NavController, performanceId: String, selectedS
                         Spacer(modifier = Modifier.height(8.dp))
                         
                         Text(
-                            text = "2024-01-15 19:30",
+                            text = schedule.dateTime,
                             fontSize = 14.sp,
                             color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
@@ -122,7 +134,7 @@ fun PaymentScreen(navController: NavController, performanceId: String, selectedS
                         Spacer(modifier = Modifier.height(8.dp))
                         
                         Text(
-                            text = "国家大剧院",
+                            text = "国家大剧院 ${schedule.hall}",
                             fontSize = 14.sp,
                             color = MaterialTheme.colorScheme.onPrimaryContainer
                         )

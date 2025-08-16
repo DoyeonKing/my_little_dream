@@ -119,36 +119,52 @@ fun TheaterPlatformApp() {
                 performanceId?.let { PerformanceDetailScreen(navController, it) }
             }
             
-            composable("seat-selection/{performanceId}") { backStackEntry ->
+            composable("schedule-selection/{performanceId}") { backStackEntry ->
                 val performanceId = backStackEntry.arguments?.getString("performanceId")
-                performanceId?.let { SeatSelectionScreen(navController, it) }
+                performanceId?.let { ScheduleSelectionScreen(navController, it) }
             }
             
-            // 2D和3D选座路由
-            composable("2d-seating/{performanceId}") { backStackEntry ->
+            composable("seat-selection/{performanceId}/{scheduleId}") { backStackEntry ->
                 val performanceId = backStackEntry.arguments?.getString("performanceId")
-                performanceId?.let { Theater2DSeatingScreen(navController, it) }
-            }
-            
-            composable("3d-seating/{performanceId}") { backStackEntry ->
-                val performanceId = backStackEntry.arguments?.getString("performanceId")
-                performanceId?.let { Theater3DSeatingScreen(navController, it) }
-            }
-            
-            // 支付和确认路由
-            composable("payment/{performanceId}/{selectedSeats}") { backStackEntry ->
-                val performanceId = backStackEntry.arguments?.getString("performanceId")
-                val selectedSeats = backStackEntry.arguments?.getString("selectedSeats")
-                if (performanceId != null && selectedSeats != null) {
-                    PaymentScreen(navController, performanceId, selectedSeats)
+                val scheduleId = backStackEntry.arguments?.getString("scheduleId")
+                if (performanceId != null && scheduleId != null) {
+                    SeatSelectionScreen(navController, performanceId, scheduleId)
                 }
             }
             
-            composable("purchase-confirmation/{performanceId}/{selectedSeats}") { backStackEntry ->
+            // 2D和3D选座路由
+            composable("2d-seating/{performanceId}/{scheduleId}") { backStackEntry ->
                 val performanceId = backStackEntry.arguments?.getString("performanceId")
+                val scheduleId = backStackEntry.arguments?.getString("scheduleId")
+                if (performanceId != null && scheduleId != null) {
+                    Theater2DSeatingScreen(navController, performanceId, scheduleId)
+                }
+            }
+            
+            composable("3d-seating/{performanceId}/{scheduleId}") { backStackEntry ->
+                val performanceId = backStackEntry.arguments?.getString("performanceId")
+                val scheduleId = backStackEntry.arguments?.getString("scheduleId")
+                if (performanceId != null && scheduleId != null) {
+                    Theater3DSeatingScreen(navController, performanceId, scheduleId)
+                }
+            }
+            
+            // 支付和确认路由
+            composable("payment/{performanceId}/{scheduleId}/{selectedSeats}") { backStackEntry ->
+                val performanceId = backStackEntry.arguments?.getString("performanceId")
+                val scheduleId = backStackEntry.arguments?.getString("scheduleId")
                 val selectedSeats = backStackEntry.arguments?.getString("selectedSeats")
-                if (performanceId != null && selectedSeats != null) {
-                    PurchaseConfirmationScreen(navController, performanceId, selectedSeats)
+                if (performanceId != null && scheduleId != null && selectedSeats != null) {
+                    PaymentScreen(navController, performanceId, scheduleId, selectedSeats)
+                }
+            }
+            
+            composable("purchase-confirmation/{performanceId}/{scheduleId}/{selectedSeats}") { backStackEntry ->
+                val performanceId = backStackEntry.arguments?.getString("performanceId")
+                val scheduleId = backStackEntry.arguments?.getString("scheduleId")
+                val selectedSeats = backStackEntry.arguments?.getString("selectedSeats")
+                if (performanceId != null && scheduleId != null && selectedSeats != null) {
+                    PurchaseConfirmationScreen(navController, performanceId, scheduleId, selectedSeats)
                 }
             }
         }

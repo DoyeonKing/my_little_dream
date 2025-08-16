@@ -15,12 +15,21 @@ import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PurchaseConfirmationScreen(navController: NavController, performanceId: String, selectedSeats: String) {
+fun PurchaseConfirmationScreen(navController: NavController, performanceId: String, scheduleId: String, selectedSeats: String) {
     val performance = when (performanceId) {
         "1" -> "《哈姆雷特》"
         "2" -> "《天鹅湖》"
         "3" -> "《茶花女》"
         else -> "未知演出"
+    }
+    
+    val schedule = when (scheduleId) {
+        "1" -> Schedule("1", "2024-01-15 19:30", "歌剧厅", "¥180-1280", "156")
+        "2" -> Schedule("2", "2024-01-16 19:30", "歌剧厅", "¥180-1280", "89")
+        "3" -> Schedule("3", "2024-01-17 19:30", "歌剧厅", "¥180-1280", "234")
+        "4" -> Schedule("4", "2024-01-18 14:30", "歌剧厅", "¥180-1280", "67")
+        "5" -> Schedule("5", "2024-01-19 19:30", "歌剧厅", "¥180-1280", "123")
+        else -> Schedule("1", "2024-01-15 19:30", "歌剧厅", "¥180-1280", "156")
     }
     
     val seats = selectedSeats.split(",").filter { it.isNotEmpty() }
@@ -120,7 +129,7 @@ fun PurchaseConfirmationScreen(navController: NavController, performanceId: Stri
                                 Spacer(modifier = Modifier.height(4.dp))
                                 
                                 Text(
-                                    text = "2024-01-15 19:30",
+                                    text = schedule.dateTime,
                                     fontSize = 14.sp,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -248,7 +257,7 @@ fun PurchaseConfirmationScreen(navController: NavController, performanceId: Stri
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Column(
+                    Column(
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                                                          Icon(

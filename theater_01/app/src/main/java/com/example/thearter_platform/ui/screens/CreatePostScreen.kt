@@ -46,8 +46,8 @@ fun CreatePostScreen(navController: NavController) {
                 value = postContent,
                 onValueChange = { postContent = it },
                 placeholder = { Text("分享你的观剧感受...") },
-                modifier = Modifier
-                    .fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                     .height(200.dp),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.surface,
@@ -56,11 +56,11 @@ fun CreatePostScreen(navController: NavController) {
             )
             
             Spacer(modifier = Modifier.height(16.dp))
-            
-            Text(
+                        
+                        Text(
                 text = "功能开发中...",
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
