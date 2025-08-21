@@ -100,72 +100,74 @@ fun TheaterPlatformApp() {
                 CitySelectionScreen(navController)
             }
             
+            // 知识图谱相关路由
+            composable("knowledge-graph") {
+                KnowledgeGraphScreen(navController)
+            }
+            
+            // 剧目信息路由
+            composable("play-knowledge") {
+                PlayKnowledgeScreen(navController)
+            }
+            
+            // 演员资料路由
+            composable("actor-knowledge") {
+                ActorKnowledgeScreen(navController)
+            }
+            
+            // 行话科普路由
+            composable("terminology") {
+                TerminologyScreen(navController)
+            }
+            
+            // 新出娱乐路由
+            composable("news") {
+                NewsScreen(navController)
+            }
+            
+            // 时间线路由
+            composable("timeline") {
+                TimelineScreen(navController)
+            }
+            
+            // 智能问答路由
+            composable("ai-chat") {
+                AIChatScreen(navController)
+            }
+            
+            // 其他功能路由
+            composable("ai-generation") {
+                AIGenerationScreen(navController)
+            }
+            composable("tickets") {
+                TicketScreen(navController)
+            }
+            composable("ticket-search") {
+                TicketSearchScreen(navController)
+            }
+            composable("create-log") {
+                CreateLogScreen(navController)
+            }
+            
             // 盘票相关路由
-            composable("ticket-community") {
-                TicketCommunityScreen(navController)
-            }
-            
-            composable("create-ticket-post") {
-                CreateTicketPostScreen(navController)
-            }
-            
             composable("ticket-exchange") {
                 TicketExchangeScreen(navController)
             }
-            
-            // 购票流程路由
-            composable("performance-detail/{performanceId}") { backStackEntry ->
-                val performanceId = backStackEntry.arguments?.getString("performanceId")
-                performanceId?.let { PerformanceDetailScreen(navController, it) }
+            composable("create-ticket-post") {
+                CreateTicketPostScreen(navController)
+            }
+            composable("ticket-detail/{ticketId}") { backStackEntry ->
+                val ticketId = backStackEntry.arguments?.getString("ticketId") ?: "1"
+                TicketDetailScreen(navController, ticketId)
+            }
+            composable("ticket-community") {
+                TicketExchangeScreen(navController)
             }
             
-            composable("schedule-selection/{performanceId}") { backStackEntry ->
-                val performanceId = backStackEntry.arguments?.getString("performanceId")
-                performanceId?.let { ScheduleSelectionScreen(navController, it) }
-            }
-            
-            composable("seat-selection/{performanceId}/{scheduleId}") { backStackEntry ->
-                val performanceId = backStackEntry.arguments?.getString("performanceId")
-                val scheduleId = backStackEntry.arguments?.getString("scheduleId")
-                if (performanceId != null && scheduleId != null) {
-                    SeatSelectionScreen(navController, performanceId, scheduleId)
-                }
-            }
-            
-            // 2D和3D选座路由
-            composable("2d-seating/{performanceId}/{scheduleId}") { backStackEntry ->
-                val performanceId = backStackEntry.arguments?.getString("performanceId")
-                val scheduleId = backStackEntry.arguments?.getString("scheduleId")
-                if (performanceId != null && scheduleId != null) {
-                    Theater2DSeatingScreen(navController, performanceId, scheduleId)
-                }
-            }
-            
-            composable("3d-seating/{performanceId}/{scheduleId}") { backStackEntry ->
-                val performanceId = backStackEntry.arguments?.getString("performanceId")
-                val scheduleId = backStackEntry.arguments?.getString("scheduleId")
-                if (performanceId != null && scheduleId != null) {
-                    Theater3DSeatingScreen(navController, performanceId, scheduleId)
-                }
-            }
-            
-            // 支付和确认路由
-            composable("payment/{performanceId}/{scheduleId}/{selectedSeats}") { backStackEntry ->
-                val performanceId = backStackEntry.arguments?.getString("performanceId")
-                val scheduleId = backStackEntry.arguments?.getString("scheduleId")
-                val selectedSeats = backStackEntry.arguments?.getString("selectedSeats")
-                if (performanceId != null && scheduleId != null && selectedSeats != null) {
-                    PaymentScreen(navController, performanceId, scheduleId, selectedSeats)
-                }
-            }
-            
-            composable("purchase-confirmation/{performanceId}/{scheduleId}/{selectedSeats}") { backStackEntry ->
-                val performanceId = backStackEntry.arguments?.getString("performanceId")
-                val scheduleId = backStackEntry.arguments?.getString("scheduleId")
-                val selectedSeats = backStackEntry.arguments?.getString("selectedSeats")
-                if (performanceId != null && scheduleId != null && selectedSeats != null) {
-                    PurchaseConfirmationScreen(navController, performanceId, scheduleId, selectedSeats)
-                }
+            // 视频详情路由
+            composable("video-detail/{postId}") { backStackEntry ->
+                val postId = backStackEntry.arguments?.getString("postId")
+                VideoDetailScreen(navController, postId)
             }
         }
     }

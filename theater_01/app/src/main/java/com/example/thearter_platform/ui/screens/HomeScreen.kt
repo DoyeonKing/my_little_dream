@@ -292,6 +292,34 @@ fun QuickActionsSection(navController: NavController) {
                 backgroundColor = MaterialTheme.colorScheme.tertiaryContainer
             )
         }
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+                               QuickActionButton(
+                       icon = Icons.Rounded.Info,
+                       text = "知识图谱",
+                       onClick = { navController.navigate("knowledge-graph") },
+                       backgroundColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.8f)
+                   )
+
+                   QuickActionButton(
+                       icon = Icons.Rounded.Person,
+                       text = "演员资料",
+                       onClick = { navController.navigate("knowledge/actors") },
+                       backgroundColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f)
+                   )
+
+                   QuickActionButton(
+                       icon = Icons.Rounded.Info,
+                       text = "剧目信息",
+                       onClick = { navController.navigate("knowledge/plays") },
+                       backgroundColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.8f)
+                   )
+        }
     }
 }
 

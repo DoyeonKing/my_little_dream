@@ -35,3 +35,4 @@ fun CreateLogScreen(navController: NavController) {
         }
     }
 }
+

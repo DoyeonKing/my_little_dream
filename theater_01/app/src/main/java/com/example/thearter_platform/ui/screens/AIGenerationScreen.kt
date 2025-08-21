@@ -35,3 +35,4 @@ fun AIGenerationScreen(navController: NavController) {
         }
     }
 }
+
